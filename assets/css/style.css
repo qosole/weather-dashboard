@@ -4,3 +4,8 @@ h1 {
     background-color: navy;
     padding: 2%;
 }
+
+#search-btn {
+    margin-top: 8px;
+    width: 100%;
+}
