@@ -12,4 +12,10 @@ h1 {
 
 .card {
     margin-top: 20px;
+    margin-left: 20px;
+}
+
+.current-weather {
+    margin-top: -165px;
+    margin-left: 600px;
 }
