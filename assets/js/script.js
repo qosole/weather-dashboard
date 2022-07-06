@@ -6,18 +6,16 @@ var currentWeatherDisplay = document.querySelector('.card-text');
 // api key
 var apiKey = "c673edd3fa85ebee83a764380b4acf45";
 
-// api url
-var apiUrl = "";
-// Forecast url: https://api.openweathermap.org/data/2.5/forecast?q={city name}&appid={API key}
 // Current weather url: https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
-// UV index url: https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
+// UV index and forecast url: https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
 
 var apiRequest = function(city) {
     // latitude and longitude
     var lat = "";
     var lon = "";
 
-    apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
+    // Fetching current weather data
+    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + apiKey;
 
     fetch(apiUrl)
         .then(function(response) {
@@ -27,20 +25,21 @@ var apiRequest = function(city) {
                     console.log(data);
                     cityNameDisplay.textContent = data.name;
                     currentWeatherDisplay.innerHTML = "Temperature: ";
-                    currentWeatherDisplay.textContent += Math.round((data.main.temp - 273.15) * 9/5 + 32); // Api gives temp in K, this formula converts to F
+                    currentWeatherDisplay.textContent += data.main.temp;
                     currentWeatherDisplay.innerHTML += "°F<br><br>";
                     currentWeatherDisplay.innerHTML += "Humidity: " + data.main.humidity + "%<br><br>";
                     currentWeatherDisplay.innerHTML += "Wind Speed: " + data.wind.speed + "&nbspmph<br><br>";
-                    // Recording lat and lon of the searched city for use in uv index fetch
+                    // Recording lat and lon of the searched city for use in uv index and forecast fetches
                     lat = data.coord.lat;
                     lon = data.coord.lon;
-                    // Fetching UV index
-                    var uvUrl = "https://api.openweathermap.org/data/3.0/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
+                    // Fetching UV index and forecast for next 5 days
+                    var uvUrl = "https://api.openweathermap.org/data/3.0/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,alerts&appid=" + apiKey;
                     fetch(uvUrl)
                         .then(function(response) {
                             if (response.ok) {
                                 response.json().then(function(data) {
                                     console.log(data);
+                                    // UV Index
                                     var uvIndexDisplay = document.createElement('span');
                                     currentWeatherDisplay.innerHTML += "UV Index: ";
                                     uvIndexDisplay.innerHTML = data.current.uvi;
@@ -60,13 +59,22 @@ var apiRequest = function(city) {
                                     uvIndexDisplay.style.padding = "5px";
                                     uvIndexDisplay.style.borderRadius = "9px";
                                     currentWeatherDisplay.appendChild(uvIndexDisplay);
+
+                                    // Current weather icon
+                                    var currentIcon = document.createElement('img');
+                                    currentIcon.setAttribute('src', 'http://openweathermap.org/img/wn/' + data.current.weather[0].icon + '@2x.png');
+                                    currentIcon.setAttribute('alt', 'icon symbolizing the current weather conditions');
+                                    cityNameDisplay.appendChild(currentIcon);
+
+                                    // Forecast
+                                    
                                 });
                             } else {
                                 alert('Error: ' + response.statusText);
                             }
                         })
                         .catch(function(error) {
-                            alert('Unable to retrieve UV index');
+                            alert('Unable to retrieve UV index or forecast');
                         });
                 });
             } else {
@@ -76,26 +84,6 @@ var apiRequest = function(city) {
         .catch(function (error) {
             alert('Unable to retrieve weather data');
         });
-
-        
-
-    // apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey;
-
-    // fetch(apiUrl)
-    //     .then(function(response) {
-    //         if(response.ok) {
-    //             console.log(response);
-    //             response.json().then(function(data) {
-    //                 console.log(data);
-
-    //             })
-    //         } else {
-    //             alert('Error: ' + response.statusText);
-    //         }
-    //     })
-    //     .catch(function (error) {
-    //         alert('Unable to retrieve weather data');
-    //     });
 }
 
 var search = function(event) {
