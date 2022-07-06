@@ -2,6 +2,19 @@ var citySearch = document.querySelector('.form-control');
 var btnSearch = document.querySelector('#search-btn');
 var cityNameDisplay = document.querySelector('.card-title');
 var currentWeatherDisplay = document.querySelector('.card-text');
+var dateDisplay1 = document.querySelector('.date-1');
+var dateDisplay2 = document.querySelector('.date-2');
+var dateDisplay3 = document.querySelector('.date-3');
+var dateDisplay4 = document.querySelector('.date-4');
+var dateDisplay5 = document.querySelector('.date-5');
+var weatherDisplay1 = document.querySelector('.weather-1');
+var weatherDisplay2 = document.querySelector('.weather-2');
+var weatherDisplay3 = document.querySelector('.weather-3');
+var weatherDisplay4 = document.querySelector('.weather-4');
+var weatherDisplay5 = document.querySelector('.weather-5');
+
+// Using Moment.js to display current date and forecast dates
+
 
 // api key
 var apiKey = "c673edd3fa85ebee83a764380b4acf45";
@@ -33,7 +46,7 @@ var apiRequest = function(city) {
                     lat = data.coord.lat;
                     lon = data.coord.lon;
                     // Fetching UV index and forecast for next 5 days
-                    var uvUrl = "https://api.openweathermap.org/data/3.0/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,alerts&appid=" + apiKey;
+                    var uvUrl = "https://api.openweathermap.org/data/3.0/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,alerts&units=imperial&appid=" + apiKey;
                     fetch(uvUrl)
                         .then(function(response) {
                             if (response.ok) {
@@ -67,7 +80,26 @@ var apiRequest = function(city) {
                                     cityNameDisplay.appendChild(currentIcon);
 
                                     // Forecast
-                                    
+                                    console.log(data.daily);
+                                    weatherDisplay1.textContent = "";
+                                    weatherDisplay1.innerHTML += "Temp: " + data.daily[1].temp.day + "°F<br><br>";
+                                    weatherDisplay1.innerHTML += "Humidity: " + data.daily[1].humidity + "%"; 
+
+                                    weatherDisplay2.textContent = "";
+                                    weatherDisplay2.innerHTML += "Temp: " + data.daily[2].temp.day + "°F<br><br>";
+                                    weatherDisplay2.innerHTML += "Humidity: " + data.daily[2].humidity + "%"; 
+
+                                    weatherDisplay3.textContent = "";
+                                    weatherDisplay3.innerHTML += "Temp: " + data.daily[3].temp.day + "°F<br><br>";
+                                    weatherDisplay3.innerHTML += "Humidity: " + data.daily[3].humidity + "%"; 
+
+                                    weatherDisplay4.textContent = "";
+                                    weatherDisplay4.innerHTML += "Temp: " + data.daily[4].temp.day + "°F<br><br>";
+                                    weatherDisplay4.innerHTML += "Humidity: " + data.daily[4].humidity + "%"; 
+
+                                    weatherDisplay5.textContent = "";
+                                    weatherDisplay5.innerHTML += "Temp: " + data.daily[5].temp.day + "°F<br><br>";
+                                    weatherDisplay5.innerHTML += "Humidity: " + data.daily[5].humidity + "%"; 
                                 });
                             } else {
                                 alert('Error: ' + response.statusText);
