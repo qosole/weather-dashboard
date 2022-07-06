@@ -6,10 +6,6 @@ var currentWeatherDisplay = document.querySelector('.card-text');
 // api key
 var apiKey = "c673edd3fa85ebee83a764380b4acf45";
 
-// latitude and longitude
-var lat = "";
-var lon = "";
-
 // api url
 var apiUrl = "";
 // Forecast url: https://api.openweathermap.org/data/2.5/forecast?q={city name}&appid={API key}
@@ -17,6 +13,10 @@ var apiUrl = "";
 // UV index url: https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
 
 var apiRequest = function(city) {
+    // latitude and longitude
+    var lat = "";
+    var lon = "";
+
     apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
 
     fetch(apiUrl)
@@ -30,10 +30,44 @@ var apiRequest = function(city) {
                     currentWeatherDisplay.textContent += Math.round((data.main.temp - 273.15) * 9/5 + 32); // Api gives temp in K, this formula converts to F
                     currentWeatherDisplay.innerHTML += "°F<br><br>";
                     currentWeatherDisplay.innerHTML += "Humidity: " + data.main.humidity + "%<br><br>";
-                    currentWeatherDisplay.innerHTML += "Wind speed: " + data.wind.speed + "&nbspmph<br><br>";
+                    currentWeatherDisplay.innerHTML += "Wind Speed: " + data.wind.speed + "&nbspmph<br><br>";
                     // Recording lat and lon of the searched city for use in uv index fetch
                     lat = data.coord.lat;
                     lon = data.coord.lon;
+                    // Fetching UV index
+                    var uvUrl = "https://api.openweathermap.org/data/3.0/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
+                    fetch(uvUrl)
+                        .then(function(response) {
+                            if (response.ok) {
+                                response.json().then(function(data) {
+                                    console.log(data);
+                                    var uvIndexDisplay = document.createElement('span');
+                                    currentWeatherDisplay.innerHTML += "UV Index: ";
+                                    uvIndexDisplay.innerHTML = data.current.uvi;
+                                    // color coding the uv index
+                                    if (data.current.uvi <= 2.4) {
+                                        uvIndexDisplay.style.backgroundColor = "darkgreen";
+                                    } else if (data.current.uvi > 2.4 && data.current.uvi < 6) {
+                                        uvIndexDisplay.style.backgroundColor = "gold";
+                                    } else if (data.current.uvi >= 6 && data.current.uvi < 8) {
+                                        uvIndexDisplay.style.backgroundColor = "darkorange";
+                                    } else if (data.current.uvi >= 8 && data.current.uvi < 10) {
+                                        uvIndexDisplay.style.backgroundColor = "darkred";
+                                    } else {
+                                        uvIndexDisplay.style.backgroundColor = "darkviolet";
+                                    }
+                                    uvIndexDisplay.style.color = "white";
+                                    uvIndexDisplay.style.padding = "5px";
+                                    uvIndexDisplay.style.borderRadius = "9px";
+                                    currentWeatherDisplay.appendChild(uvIndexDisplay);
+                                });
+                            } else {
+                                alert('Error: ' + response.statusText);
+                            }
+                        })
+                        .catch(function(error) {
+                            alert('Unable to retrieve UV index');
+                        });
                 });
             } else {
                 alert('Error: ' + response.statusText);
@@ -43,23 +77,7 @@ var apiRequest = function(city) {
             alert('Unable to retrieve weather data');
         });
 
-        // Fetching UV index
-        var uvUrl = "https://api.openweathermap.org/data/3.0/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
-        fetch(uvUrl)
-            .then(function(response) {
-                if (response.ok) {
-                    response.json().then(function(data) {
-                        console.log(data);
-                        var uvIndexDisplay = document.createElement('span');
-                        currentWeatherDisplay.innerHTML += "UV index: " + data.current.uvi;
-                    });
-                } else {
-                    alert('Error: ' + response.statusText);
-                }
-            })
-            .catch(function(error) {
-                alert('Unable to retrieve weather data');
-            });
+        
 
     // apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey;
 
