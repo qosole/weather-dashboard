@@ -199,6 +199,9 @@ btnSearch.addEventListener('click', search);
 // Loading local storage on page load
 function init () {
     history = JSON.parse(localStorage.getItem('history'));
+    if (history == null) {
+        return;
+    }
     console.log(history);
 
     for (let i = 0; i < history.length; i++) {
