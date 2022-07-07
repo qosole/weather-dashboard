@@ -91,22 +91,42 @@ var apiRequest = function(city) {
                                     weatherDisplay1.textContent = "";
                                     weatherDisplay1.innerHTML += "Temp: " + data.daily[1].temp.day + "°F<br><br>";
                                     weatherDisplay1.innerHTML += "Humidity: " + data.daily[1].humidity + "%"; 
+                                    var forecastIcon1 = document.createElement('img');
+                                    forecastIcon1.setAttribute('src', 'http://openweathermap.org/img/wn/' + data.daily[1].weather[0].icon + '.png');
+                                    forecastIcon1.setAttribute('alt', 'icon symbolizing the future weather conditions');
+                                    dateDisplay1.appendChild(forecastIcon1);
 
                                     weatherDisplay2.textContent = "";
                                     weatherDisplay2.innerHTML += "Temp: " + data.daily[2].temp.day + "°F<br><br>";
                                     weatherDisplay2.innerHTML += "Humidity: " + data.daily[2].humidity + "%"; 
+                                    var forecastIcon2 = document.createElement('img');
+                                    forecastIcon2.setAttribute('src', 'http://openweathermap.org/img/wn/' + data.daily[2].weather[0].icon + '.png');
+                                    forecastIcon2.setAttribute('alt', 'icon symbolizing the future weather conditions');
+                                    dateDisplay2.appendChild(forecastIcon2);
 
                                     weatherDisplay3.textContent = "";
                                     weatherDisplay3.innerHTML += "Temp: " + data.daily[3].temp.day + "°F<br><br>";
                                     weatherDisplay3.innerHTML += "Humidity: " + data.daily[3].humidity + "%"; 
+                                    var forecastIcon3 = document.createElement('img');
+                                    forecastIcon3.setAttribute('src', 'http://openweathermap.org/img/wn/' + data.daily[3].weather[0].icon + '.png');
+                                    forecastIcon3.setAttribute('alt', 'icon symbolizing the future weather conditions');
+                                    dateDisplay3.appendChild(forecastIcon3);
 
                                     weatherDisplay4.textContent = "";
                                     weatherDisplay4.innerHTML += "Temp: " + data.daily[4].temp.day + "°F<br><br>";
                                     weatherDisplay4.innerHTML += "Humidity: " + data.daily[4].humidity + "%"; 
+                                    var forecastIcon4 = document.createElement('img');
+                                    forecastIcon4.setAttribute('src', 'http://openweathermap.org/img/wn/' + data.daily[4].weather[0].icon + '.png');
+                                    forecastIcon4.setAttribute('alt', 'icon symbolizing the future weather conditions');
+                                    dateDisplay4.appendChild(forecastIcon4);
 
                                     weatherDisplay5.textContent = "";
                                     weatherDisplay5.innerHTML += "Temp: " + data.daily[5].temp.day + "°F<br><br>";
                                     weatherDisplay5.innerHTML += "Humidity: " + data.daily[5].humidity + "%"; 
+                                    var forecastIcon5 = document.createElement('img');
+                                    forecastIcon5.setAttribute('src', 'http://openweathermap.org/img/wn/' + data.daily[5].weather[0].icon + '.png');
+                                    forecastIcon5.setAttribute('alt', 'icon symbolizing the future weather conditions');
+                                    dateDisplay5.appendChild(forecastIcon5);
                                 });
                             } else {
                                 alert('Error: ' + response.statusText);
