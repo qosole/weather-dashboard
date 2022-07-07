@@ -22,6 +22,9 @@ var date3 = moment().add(3, "days").format("M/D/YYYY");
 var date4 = moment().add(4, "days").format("M/D/YYYY");
 var date5 = moment().add(5, "days").format("M/D/YYYY");
 
+// Search history (local storage)
+let history = [];
+
 // api key
 var apiKey = "c673edd3fa85ebee83a764380b4acf45";
 
@@ -177,6 +180,9 @@ var search = function(event) {
             event.preventDefault();
             apiRequest(cityName);
         });
+        history.push(cityName);
+        localStorage.setItem('history', JSON.stringify(history));
+        console.log(history);
         searchHistory.appendChild(searchHistoryItem);
         apiRequest(cityName);
     } else {
@@ -191,6 +197,20 @@ citySearch.addEventListener('keyup', search);
 btnSearch.addEventListener('click', search);
 
 // Loading local storage on page load
-init () {
-    
+function init () {
+    history = JSON.parse(localStorage.getItem('history'));
+    console.log(history);
+
+    for (let i = 0; i < history.length; i++) {
+        var searchHistoryItem = document.createElement('li');
+        searchHistoryItem.classList.add('list-group-item');
+        searchHistoryItem.innerHTML = history[i];
+        searchHistoryItem.addEventListener('click', function(event) {
+            event.preventDefault();
+            apiRequest(history[i]);
+        });
+        searchHistory.appendChild(searchHistoryItem);
+    }
 }
+
+init();
