@@ -2,19 +2,24 @@ var citySearch = document.querySelector('.form-control');
 var btnSearch = document.querySelector('#search-btn');
 var cityNameDisplay = document.querySelector('.card-title');
 var currentWeatherDisplay = document.querySelector('.card-text');
-var dateDisplay1 = document.querySelector('.date-1');
-var dateDisplay2 = document.querySelector('.date-2');
+var dateDisplay5 = document.querySelector('.date-1');
+var dateDisplay4 = document.querySelector('.date-2');
 var dateDisplay3 = document.querySelector('.date-3');
-var dateDisplay4 = document.querySelector('.date-4');
-var dateDisplay5 = document.querySelector('.date-5');
-var weatherDisplay1 = document.querySelector('.weather-1');
-var weatherDisplay2 = document.querySelector('.weather-2');
+var dateDisplay2 = document.querySelector('.date-4');
+var dateDisplay1 = document.querySelector('.date-5');
+var weatherDisplay5 = document.querySelector('.weather-1');
+var weatherDisplay4 = document.querySelector('.weather-2');
 var weatherDisplay3 = document.querySelector('.weather-3');
-var weatherDisplay4 = document.querySelector('.weather-4');
-var weatherDisplay5 = document.querySelector('.weather-5');
+var weatherDisplay2 = document.querySelector('.weather-4');
+var weatherDisplay1 = document.querySelector('.weather-5');
 
 // Using Moment.js to display current date and forecast dates
-
+var currentDate = moment().format("M/D/YYYY");
+var date1 = moment().add(1, "days").format("M/D/YYYY");
+var date2 = moment().add(2, "days").format("M/D/YYYY");
+var date3 = moment().add(3, "days").format("M/D/YYYY");
+var date4 = moment().add(4, "days").format("M/D/YYYY");
+var date5 = moment().add(5, "days").format("M/D/YYYY");
 
 // api key
 var apiKey = "c673edd3fa85ebee83a764380b4acf45";
@@ -36,7 +41,9 @@ var apiRequest = function(city) {
                 console.log(response);
                 response.json().then(function(data) {
                     console.log(data);
+                    // Displaying today's date and today's weather conditions
                     cityNameDisplay.textContent = data.name;
+                    cityNameDisplay.innerHTML += "&nbsp" + "(" + currentDate + ")";
                     currentWeatherDisplay.innerHTML = "Temperature: ";
                     currentWeatherDisplay.textContent += data.main.temp;
                     currentWeatherDisplay.innerHTML += "°F<br><br>";
@@ -116,6 +123,13 @@ var apiRequest = function(city) {
         .catch(function (error) {
             alert('Unable to retrieve weather data');
         });
+
+    // Displaying the dates of the forecasted days
+    dateDisplay1.innerHTML = date1;
+    dateDisplay2.innerHTML = date2;
+    dateDisplay3.innerHTML = date3;
+    dateDisplay4.innerHTML = date4;
+    dateDisplay5.innerHTML = date5;
 }
 
 var search = function(event) {
