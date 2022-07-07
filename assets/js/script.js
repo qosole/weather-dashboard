@@ -2,6 +2,7 @@ var citySearch = document.querySelector('.form-control');
 var btnSearch = document.querySelector('#search-btn');
 var cityNameDisplay = document.querySelector('.card-title');
 var currentWeatherDisplay = document.querySelector('.card-text');
+var searchHistory = document.querySelector('.list-group');
 var dateDisplay5 = document.querySelector('.date-1');
 var dateDisplay4 = document.querySelector('.date-2');
 var dateDisplay3 = document.querySelector('.date-3');
@@ -66,16 +67,20 @@ var apiRequest = function(city) {
                                     // color coding the uv index
                                     if (data.current.uvi <= 2.4) {
                                         uvIndexDisplay.style.backgroundColor = "darkgreen";
+                                        uvIndexDisplay.style.color = "white";
                                     } else if (data.current.uvi > 2.4 && data.current.uvi < 6) {
                                         uvIndexDisplay.style.backgroundColor = "gold";
+                                        uvIndexDisplay.style.color = "black";
                                     } else if (data.current.uvi >= 6 && data.current.uvi < 8) {
                                         uvIndexDisplay.style.backgroundColor = "darkorange";
+                                        uvIndexDisplay.style.color = "white";
                                     } else if (data.current.uvi >= 8 && data.current.uvi < 10) {
                                         uvIndexDisplay.style.backgroundColor = "darkred";
+                                        uvIndexDisplay.style.color = "white";
                                     } else {
                                         uvIndexDisplay.style.backgroundColor = "darkviolet";
+                                        uvIndexDisplay.style.color = "white";
                                     }
-                                    uvIndexDisplay.style.color = "white";
                                     uvIndexDisplay.style.padding = "5px";
                                     uvIndexDisplay.style.borderRadius = "9px";
                                     currentWeatherDisplay.appendChild(uvIndexDisplay);
@@ -164,6 +169,15 @@ var search = function(event) {
 
     if (cityName) {
         citySearch.value = '';
+        // Adding to search history
+        var searchHistoryItem = document.createElement('li');
+        searchHistoryItem.classList.add('list-group-item');
+        searchHistoryItem.innerHTML = cityName;
+        searchHistoryItem.addEventListener('click', function(event) {
+            event.preventDefault();
+            apiRequest(cityName);
+        });
+        searchHistory.appendChild(searchHistoryItem);
         apiRequest(cityName);
     } else {
         alert('Please enter a city');
@@ -175,3 +189,8 @@ citySearch.addEventListener('keyup', search);
 
 // Executing the search when search button is pressed
 btnSearch.addEventListener('click', search);
+
+// Loading local storage on page load
+init () {
+    
+}
