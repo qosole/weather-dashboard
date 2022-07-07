@@ -200,6 +200,7 @@ btnSearch.addEventListener('click', search);
 function init () {
     history = JSON.parse(localStorage.getItem('history'));
     if (history == null) {
+        history = [];
         return;
     }
     console.log(history);
